@@ -22,24 +22,24 @@ This lesson will cover the `process` global object in Node to get system informa
 
 `process` has a lengthy number of properties related to the currently running Node instance and the environment.
 
-* `process.env`: Environment variables
-* `process.pid`: Process ID, i.e., ID of the current process
-* `process.platform`: Platform, e.g., `darwin`
-* `process.cwd()`: Current working directory. Not always the same as `__dirname`.
-* `process.version`: Version of node
-* `process.versions`: Versions of node, V8, zlib and other Node internal components
-* `process.features`: Features of this Node instance, e.g., `debug`p
-* `process.arch`: Architecture of this system, e.g., `x64`
-* `process.uptime()`: Time this process runs in seconds
-* `process.memoryUsage()`: The heap total and used numbers
+- `process.env`: Environment variables
+- `process.pid`: Process ID, i.e., ID of the current process
+- `process.platform`: Platform, e.g., `darwin`
+- `process.cwd()`: Current working directory. Not always the same as `__dirname`.
+- `process.version`: Version of node
+- `process.versions`: Versions of node, V8, zlib and other Node internal components
+- `process.features`: Features of this Node instance, e.g., `debug`p
+- `process.arch`: Architecture of this system, e.g., `x64`
+- `process.uptime()`: Time this process runs in seconds
+- `process.memoryUsage()`: The heap total and used numbers
 
 ## Exiting The Process
 
 It also has methods to terminate the process:
 
-* `process.exit(1)`: Exit the current process with errors
-* `process.exit(0)`: Exit the current process with no errors
-* `process.kill(pid)`: Terminate a process by its ID `pid`, e.g., to kill self is `process.kill(process.pid)`
+- `process.exit(1)`: Exit the current process with errors
+- `process.exit(0)`: Exit the current process with no errors
+- `process.kill(pid)`: Terminate a process by its ID `pid`, e.g., to kill self is `process.kill(process.pid)`
 
 Note: the difference between `exit()` and `kill()` is that with the latter you can terminate any process and with the former only the current process.
 
@@ -69,12 +69,12 @@ The command will output `production` and terminate. You can run a script instead
 
 So how does our Node process communicate with the outside world besides the environment variables? Can we pass some data and get the Node script to output the results that we need?
 
-Standard input `process.stdin` and output `process.stdout` are the answer. They are streams. A stream is this cool abstraction which allows us to process information (read or write) in chunks, i.e., without waiting for the whole information to finish loading. They are useful when there is no end (continuous operations) or when dealing with large data (e.g., videos, archives, images, huge datasets). 
+Standard input `process.stdin` and output `process.stdout` are the answer. They are streams. A stream is this cool abstraction which allows us to process information (read or write) in chunks, i.e., without waiting for the whole information to finish loading. They are useful when there is no end (continuous operations) or when dealing with large data (e.g., videos, archives, images, huge datasets).
 
 Streams are a powerful concept and they are used a lot in Node, but it's not vital to fully understand them before you start using them. So don't worry. Right now, we want you to know that input and output are streams, what streams are and how to use them for `stdin` and `stdout`. We'll show you the input (`stdin`), which is a readable stream, later. For now let's focus on the output (`stdout`) which is a writable stream. Consider an example in which we output a string:
 
 ```js
-process.stdout.write('Practical Node.js \n')
+process.stdout.write("Practical Node.js \n");
 ```
 
 You might have guessed that using `process.stdout.write` is the exact same thing as `console.log`. In other words, `stdout` is the output of the Node program. But what about the input? How can you create a code generator which asks you some questions (what template engine to use?) to generate the boilerplate code? Or another command line tool?
@@ -82,22 +82,22 @@ You might have guessed that using `process.stdout.write` is the exact same thing
 We can use `stdin` which is an input to Node programs. Using it involves setting up event listeners `readable`. (The code for the `stdin` example is in the `stdin.js` file.)
 
 ```js
-process.stdin.setEncoding('utf8')
+process.stdin.setEncoding("utf8");
 
-process.stdin.on('readable', function() {
-  var chunk = process.stdin.read()
+process.stdin.on("readable", function() {
+  var chunk = process.stdin.read();
   if (chunk !== null) {
-    process.stdout.write(`data: ${chunk}`)
+    process.stdout.write(`data: ${chunk}`);
   }
-})
+});
 ```
 
 So basically we are telling Node to wait for the event `readable` (`stdin` is something called readable stream). When this event happens, we read a chunk of data with the `read()` function. We echo the input back prefixing it with `data`. We also need another event listener `end`:
 
 ```js
-process.stdin.on('end', function () {
-  process.stdout.write('end')
-})
+process.stdin.on("end", function() {
+  process.stdout.write("end");
+});
 ```
 
 This second event listener will fire on the pressing of the enter button. It will output the input back to the terminal.
@@ -110,9 +110,8 @@ Launch `node stdin.js` and watch what happens. When we run it, we can keep enter
 
 1. [Official Process Object Documentation](https://nodejs.org/api/process.html)
 1. [The node.js process object video](https://egghead.io/lessons/node-js-the-node-js-process-object)
-1. [Environment Variables on Windows](https://msdn.microsoft.com/en-us/library/windows/desktop/ms682653(v=vs.85).aspx)
-2. [Node.js Process & Child Process video](https://www.youtube.com/watch?v=9o8B3L0-d9c)
-
+1. [Environment Variables on Windows](<https://msdn.microsoft.com/en-us/library/windows/desktop/ms682653(v=vs.85).aspx>)
+1. [Node.js Process & Child Process video](https://www.youtube.com/watch?v=9o8B3L0-d9c)
 
 ---
 
